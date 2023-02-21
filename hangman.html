@@ -36,13 +36,43 @@
         </p>
     </div>
 
-    <div class="game_cont">
-        
+    <div class="game_cont hidden" id="gameContainer">
+        <div class="enemy_deck hidden" id="enemyDeck">
+            <span class="card_info">
+                <Label class="enemy_lbl">
+                    <b><i>Biggie's Deck</i></b>
+                </Label>
+                <Label class="card_counter" id="enemyCardCounter">
+                    <b><i>Cards: 0</i></b>
+                </Label>
+                <Label class="round_counter" id="roundCounter">
+                    <b><i>Round: 1</i></b>
+                </Label>
+            </span>
+
+            <div class="cards_container" id="enemyCardsContainer"></div>
+        </div>
+
+        <div class="player_deck hidden" id="playerDeck">
+            <span class="card_info">
+                <Label class="player_lbl">
+                    <b><i>Your Deck</i></b>
+                </Label>
+                <Label class="card_counter" id="playerCardCounter">
+                    <b><i>Cards: 0</i></b>
+                </Label>
+                <Label class="round_counter" id="roundCounter">
+                    <b><i>Round: 1</i></b>
+                </Label>
+            </span>
+
+            <div class="cards_container" id="playerCardsContainer"></div>
+        </div>
     </div>
 
     <div class="green_block"></div>
-    <div class="jump_green_lock"></div>
-    <div class="green_line"></div>
+    <div class="jump_green_block"></div>
+    <div class="green_line_hangman"></div>
 
     <script src="hangman.js"></script>
 </body>

@@ -88,27 +88,27 @@
 
     position: absolute;
     left: 15%;
-    bottom: 15%;
+    bottom: 10%;
 
     animation: jump 1s linear infinite;
 }
 
 @keyframes jump{
-    0% {bottom: 15%;}
-    25% {bottom: 20%;}
-    50% {bottom: 25%;}
-    75% {bottom: 20%;}
-    100% {bottom: 15%;}
+    0% {bottom: 10%;}
+    25% {bottom: 12%;}
+    50% {bottom: 17%;}
+    75% {bottom: 12%;}
+    100% {bottom: 10%;}
 }
 
-.jump_green_lock{
+.jump_green_block{
     width: 50px;
     height: 50px;
     border: 1px solid var(--font_color);
 
     position: absolute;
     right: -50px;
-    bottom: 15%;
+    bottom: 10%;
 
     animation: move_left 3s linear infinite;
 }
@@ -121,9 +121,79 @@
     100% {right: 100%;}
 }
 
+.green_line_hangman{
+    position: absolute;
+    left: 0;
+    bottom: 10%;
+    height: 1px;
+    width: 100%;
+    background-color: var(--font_color);
+}
+
 .rules_p{
     text-align: center;
     margin-top: 100px;
+    font-size: 20px;
+}
+
+.game_cont{
+    width: 70%;
+    height: 650px;
+    /*border: 1px solid var(--font_color);*/
+
+    margin: 75px auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.enemy_deck{
+    flex-basis: 50%;
+    border: 1px solid var(--font_color);
+}
+
+.card_info{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border: 1px solid var(--font_color);
+}
+
+.card_counter{
+    flex-basis: 33%;
+}
+
+.round_counter{
+    flex-basis: 33%;
+}
+
+.enemy_lbl{
+    flex-basis: 33%;
+} 
+
+.player_deck{
+    flex-basis: 50%;
+    border: 1px solid var(--font_color);
+}
+
+.player_lbl{
+    flex-basis: 33%;
+} 
+
+.cards_container{
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    justify-content: center;
+    
+    margin-top: 100px;
+    gap: 100px;
+}
+
+.card{
+    text-decoration: none;
+    cursor: pointer;
     font-size: 20px;
 }
 
