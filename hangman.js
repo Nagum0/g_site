@@ -89,6 +89,7 @@ playerCardCounter.innerText = `Cards: ${sortedPlayerCards.length}`;
 //CARDS DISPLAY CORRECT NUMBER
 const enemyCardsContainer = document.getElementById("enemyCardsContainer");
 const playerCardsContainer = document.getElementById("playerCardsContainer");
+let cardLinkArray = [];
 
 function createCards(array, cardContainer){
     let counter = 0;
@@ -98,13 +99,38 @@ function createCards(array, cardContainer){
         let randIndex = Math.floor(Math.random() * array.length);
         randIndexCounter.push(randIndex);
 
-        const cardLink = document.createElement("a");
+        cardLink = document.createElement("a");
         cardLink.classList.add("card");
+        cardLink.draggable = true;
         cardLink.innerHTML = array[counter];
         cardContainer.appendChild(cardLink);
+        cardLinkArray.push(cardLink);
         counter++;
     }
 }
 
 createCards(sortedEnemyCards, enemyCardsContainer);
 createCards(sortedPlayerCards, playerCardsContainer);
+
+//CARDS CONTAINERS //EVERY SINGLE CREATED CARD LINK
+const containers = document.querySelectorAll(".cards_container");
+const draggables = document.querySelectorAll(".card");
+
+draggables.forEach(card => {
+    card.addEventListener("dragstart", () => {
+        card.classList.add("card_draggable");
+    })
+
+    card.addEventListener("dragend", () => {
+        card.classList.remove("card_draggable");
+    })
+})
+
+containers.forEach(cardContainer => {
+    cardContainer.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        const draggable = document.querySelector(".card_draggable");
+        cardContainer.appendChild(draggable);
+    })
+})
+

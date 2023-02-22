@@ -197,6 +197,10 @@
     font-size: 20px;
 }
 
+.card_draggable{
+    font-size: 25px;
+}
+
 /*LABYRINTH*/
 .lab_title{
     text-align: center;
