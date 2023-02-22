@@ -60,8 +60,6 @@ function cardPairs(array, newArray){
         return counts[item] <= 1;
     })
 
-    console.log(`Result: ${result}`);
-
     for (let i = 0; i < result.length; i++) {
         newArray.push(result[i]);
     } 
@@ -115,6 +113,20 @@ createCards(sortedPlayerCards, playerCardsContainer);
 //CARDS CONTAINERS //EVERY SINGLE CREATED CARD LINK
 const containers = document.querySelectorAll(".cards_container");
 const draggables = document.querySelectorAll(".card");
+let dragCounter = 0;
+
+function checkForNewCards(array1, array2, element1, element2){
+    array1 = element1.innerText;
+    array2 = element2.innerText;
+
+    for (let i = 0; i < element1.length; i++) {
+        array1.push(element1[i]);
+    }
+
+    for (let i = 0; i < element2.length; i++) {
+        array2.push(element2[i]);
+    }
+}
 
 draggables.forEach(card => {
     card.addEventListener("dragstart", () => {
@@ -129,8 +141,25 @@ draggables.forEach(card => {
 containers.forEach(cardContainer => {
     cardContainer.addEventListener("dragover", (e) => {
         e.preventDefault();
-        const draggable = document.querySelector(".card_draggable");
+        draggable = document.querySelector(".card_draggable");
         cardContainer.appendChild(draggable);
+        dragCounter++;
+        
+        //checkForNewCards(sortedEnemyCards, sortedPlayerCards, enemyCardsContainer, playerCardsContainer);
     })
 })
 
+//DEBUG BTN
+const checkBtn = document.getElementById("checkBtn");
+
+checkBtn.addEventListener("click", () => {
+    let enemyString = "";
+    let playerString = "";
+
+    for (let i = 0; i < enemyCardsContainer.innerText.length; i++) {
+        //enemyString = enemyString + enemyCardsContainer.innerText[i];
+        console.log(enemyCardsContainer.innerText[i]);
+    }
+
+    console.log(enemyString);
+})
