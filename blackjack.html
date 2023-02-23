@@ -17,12 +17,16 @@
 				<label class="name_lbl">
 					<b><i>Dealer</i></b>
 				</label>
-				<label class="bios_counter" id="biosCounter">
+				<label class="bios_counter" id="dealerBiosCounter">
 					<b><i>Bios</i></b> <br>
 					<i>15</i>
 				</label>
 				<label class="card_sum" id="cardSum">
 					<b><i>Card Sum</i></b> <br>
+					<i>0</i>
+				</label>
+				<label class="bios_bet" id="dealerBiosBet">
+					<b><i>Bios bet</i></b> <br>
 					<i>0</i>
 				</label>
 			</span>	
@@ -32,7 +36,7 @@
 				<label class="name_lbl">
 					<b><i>Player</i></b>
 				</label>
-				<label class="bios_counter" id="biosCounter">
+				<label class="bios_counter" id="playerBiosCounter">
 					<b><i>Bios</i></b> <br>
 					<i>15</i>
 				</label>
@@ -46,7 +50,28 @@
 				<a href="#" class="command_btn" id="standBtn">
 					STAND
 				</a>
+				<a href="#" class="command_btn" id="betBtn">
+					BET
+				</a>
+				<label class="bios_bet" id="playerBetBios">
+					<b><i>Bios bet</i></b> <br>
+					<i>0</i>
+				</label>
 			</span>
+			
+		</div>
+
+		<div class="hidden" id="betMenu">
+			<label class="bet_lbl">
+				<b><i>Bet</i></b> <br>
+			</label>
+			<input type="text" class="bet_input" id="betInput">
+			<label class="bios_error_txt hidden" id="biosErrorLbl">
+				Not enough <i>BIOS</i>!
+			</label>
+			<a href="#" class="command_btn" id="confirmBetBtn">
+				CONFIRM
+			</a>
 		</div>
 	</div>
 
