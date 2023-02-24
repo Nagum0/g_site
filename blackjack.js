@@ -9,7 +9,6 @@ class BlackJack {
 		consoleLog.innerText = text;
 		consoleLog.classList.add("console_log");
 		consoleContainer.appendChild(consoleLog);
-		console.log("console upadated");
 	}
 
 	//BET MENU METHODS
@@ -64,9 +63,40 @@ class BlackJack {
 		this.updateConsole("The dealer put their bet down!");
 	}
 
-	//DEALING CARDS
-	createCard() {
+	//CREATING THE CARD
+	createCard(cardHolder, cardArray, cardCounter) {
+		let randCardValue = Math.floor(Math.random() * cardsType.length);
 
+		const card = document.createElement("div");
+		card.classList.add("blackjack_card");
+
+		const cardValue = document.createElement("label");
+		cardValue.classList.add("card_value");
+		if (dealerCardNum == 0) {
+			cardValue.innerText = "?";
+			cardArray.push(cardsType[randCardValue]);
+			dealerCardNum++;
+		} else {
+			cardValue.innerText = cardsType[randCardValue];
+			cardArray.push(cardsType[randCardValue]);
+			cardCounter++;
+		}
+
+		card.appendChild(cardValue);
+		cardHolder.appendChild(card);
+
+		console.log(`First dealer card: ${cardValue.innerText}`);
+	}
+
+	//DEALING THE CARD
+	dealingBegin() {
+		console.log("Creating first dealer hidden card");
+		this.updateConsole("The dealing of the cards will now begin!");
+		//FIRST DEALER CARD
+		setTimeout(() => { 
+			this.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
+			console.log(`Dealer cards: ${dealerCardValues}`);
+		}, 5000);
 	}
 }
 
@@ -76,9 +106,11 @@ let playerBios = 15;
 let enemyBios = 15;
 let playerBetBios = 0;
 let enemyBetBios = 0;
+let cardsType = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", 10, "A"]; //CARDS TYPES
 let playerCardsCounter = 0; //PLAYER CARDS COUNTER
 let dealerCardsCounter = 0; //DEALER CARDS COUNTER
-let cardsType = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", 10, "A"]; //CARDS TYPES
+let playerCardValues = []; //PLAYER CARD ARRAY
+let dealerCardValues = []; //DEALER CARD ARRAY
 
 const consoleContainer = document.getElementById("consoleContainer"); //CONSOLE CONTAINER
 const dealerCont = document.getElementById("dealerCont"); //DEALER CONTAINER
@@ -97,6 +129,7 @@ betBtn.addEventListener("click", () => {main.showBetMenu(betMenu)}); //SHOW BET 
 confirmBetBtn.addEventListener("click", () => {
 	main.bettingBios(playerBios, playerBetBios, playerBetBiosLbl, playerBiosCounterLbl, betInput, biosErrorLbl, betMenu);
 	main.dealerBet(enemyBios, enemyBetBios, dealerBiosBetLbl, dealerBiosCounterLbl);
+	main.dealingBegin();
 }); //CONFIRM BET
 
 //DEALER BET
