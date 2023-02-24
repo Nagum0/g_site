@@ -66,37 +66,30 @@ class BlackJack {
 	//CREATING THE CARD
 	createCard(cardHolder, cardArray, cardCounter) {
 		let randCardValue = Math.floor(Math.random() * cardsType.length);
+		let chosenCardValue = cardsType[randCardValue];
+
+		if (chosenCardValue == "J" || chosenCardValue == "Q" || chosenCardValue == "K" || chosenCardValue == "A") {
+			chosenCardValue = 10;
+		}
 
 		const card = document.createElement("div");
 		card.classList.add("blackjack_card");
 
 		const cardValue = document.createElement("label");
 		cardValue.classList.add("card_value");
-		if (dealerCardNum == 0) {
+		if (dealerCardsCounter == 0) {
+			dealerHiddenCard = cardsType[randCardValue];
 			cardValue.innerText = "?";
-			cardArray.push(cardsType[randCardValue]);
-			dealerCardNum++;
+			cardArray.push(chosenCardValue);
+			dealerCardsCounter++;
 		} else {
 			cardValue.innerText = cardsType[randCardValue];
-			cardArray.push(cardsType[randCardValue]);
+			cardArray.push(chosenCardValue);
 			cardCounter++;
 		}
 
 		card.appendChild(cardValue);
 		cardHolder.appendChild(card);
-
-		console.log(`First dealer card: ${cardValue.innerText}`);
-	}
-
-	//DEALING THE CARD
-	dealingBegin() {
-		console.log("Creating first dealer hidden card");
-		this.updateConsole("The dealing of the cards will now begin!");
-		//FIRST DEALER CARD
-		setTimeout(() => { 
-			this.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
-			console.log(`Dealer cards: ${dealerCardValues}`);
-		}, 5000);
 	}
 }
 
@@ -111,6 +104,7 @@ let playerCardsCounter = 0; //PLAYER CARDS COUNTER
 let dealerCardsCounter = 0; //DEALER CARDS COUNTER
 let playerCardValues = []; //PLAYER CARD ARRAY
 let dealerCardValues = []; //DEALER CARD ARRAY
+let dealerHiddenCard; //DEALER HIDDEN CARD
 
 const consoleContainer = document.getElementById("consoleContainer"); //CONSOLE CONTAINER
 const dealerCont = document.getElementById("dealerCont"); //DEALER CONTAINER
@@ -129,8 +123,37 @@ betBtn.addEventListener("click", () => {main.showBetMenu(betMenu)}); //SHOW BET 
 confirmBetBtn.addEventListener("click", () => {
 	main.bettingBios(playerBios, playerBetBios, playerBetBiosLbl, playerBiosCounterLbl, betInput, biosErrorLbl, betMenu);
 	main.dealerBet(enemyBios, enemyBetBios, dealerBiosBetLbl, dealerBiosCounterLbl);
-	main.dealingBegin();
-}); //CONFIRM BET
+
+	//START DEALING THE CARDS
+	setTimeout(() => {
+		main.updateConsole("The dealing of the cards will now begin!");
+		//FIRST DEALER CARD
+		setTimeout(() => { 
+			main.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
+			console.log(`Dealer cards: ${dealerCardValues}`);
+
+			//FIRST PLAYER CARD
+			setTimeout(() => {
+				main.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
+				console.log(`Player cards: ${playerCardValues}`);
+
+				//SECOND DEALER CARD
+				setTimeout(() => {
+					main.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
+					console.log(`Dealer cards: ${dealerCardValues}`);
+
+					//SECOND PLAYER CARD
+					setTimeout(() => {
+						main.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
+						console.log(`Player cards: ${playerCardValues}`);
+
+						//if (playerCardValues.reduce(())) {}
+					}, 2000);
+				}, 2000);
+			}, 2000);
+		}, 2000);
+	}, 2000);
+}); //CONFIRM BET //START DEALING CARDS
 
 //DEALER BET
 const dealerBiosBetLbl = document.getElementById("dealerBiosBetLbl");
