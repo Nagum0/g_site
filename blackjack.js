@@ -11,6 +11,16 @@ class BlackJack {
 		consoleContainer.appendChild(consoleLog);
 	}
 
+	//SUM OF CARD ARRAY
+	sumOfArray(array){
+		let sum;
+
+		return array.reduce((i, j) => {
+			sum = i + j;
+			return sum;
+		});
+	}
+
 	//BET MENU METHODS
 	showBetMenu(betMenu) {
 		betMenu.classList.remove("hidden");
@@ -147,7 +157,7 @@ confirmBetBtn.addEventListener("click", () => {
 						main.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
 						console.log(`Player cards: ${playerCardValues}`);
 
-						//if (playerCardValues.reduce(())) {}
+						console.log(main.sumOfArray(playerCardValues));
 					}, 2000);
 				}, 2000);
 			}, 2000);
