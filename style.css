@@ -228,7 +228,10 @@
 .blackjack_cont{
     width: 80%;
     height: 800px;
-    margin: 50px auto;
+
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 50px;
 
     display: flex;
     flex-direction: column;
@@ -314,4 +317,55 @@
 .bios_error_txt{
     text-align: center;
     margin-bottom: 15px;
+}
+
+.console_cont{
+    width: 250px;
+    height: 800px;
+    border: 1px solid var(--font_color);
+
+    position: absolute;
+    top: 50px;
+    right: 4%;
+}
+
+.console_log{
+    text-align: center;
+    margin-top: 8px;
+}
+
+.card_holder{
+    width: 80%;
+    height: 300px;
+
+    margin: auto auto;
+
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+
+    justify-content: center;
+}
+
+.player_card_holder{
+    height: 350px;
+}
+
+.dealer_card_holder{
+    height: 250px;
+}
+
+.blackjack_card{
+    width: 15%;
+    height: 100%;
+
+    border: 1px solid var(--font_color);
+    border-radius: 5px;
+
+    display: flex;
+}
+
+.card_value{
+    font-size: 60px;
+    margin: auto auto;
 }

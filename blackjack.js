@@ -3,12 +3,22 @@ class BlackJack {
 		this.title = title;
 	}
 
+	//UPDATE CONSOLE
+	updateConsole(text) {
+		const consoleLog = document.createElement("p");
+		consoleLog.innerText = text;
+		consoleLog.classList.add("console_log");
+		consoleContainer.appendChild(consoleLog);
+		console.log("console upadated");
+	}
+
 	//BET MENU METHODS
 	showBetMenu(betMenu) {
 		betMenu.classList.remove("hidden");
 		betMenu.classList.add("bet_menu");
 	}
 
+	//BET FUNCTION
 	bettingBios(biosNum, betBios, betBiosLbl, playerBiosLbl, biosInput, errMsg, betMenu) {
 		if (biosInput.value > biosNum) {
 			console.log("You don't have enought BIOS");
@@ -22,8 +32,12 @@ class BlackJack {
 			betMenu.style.display = "none";
 			playerBiosLbl.innerText = `Bios \n ${biosNum}`;
 			betBiosLbl.innerText = `Bios bet \n ${betBios}`;
+
 			console.log(`PLayer bet BIOS: ${betBios}`);
 			console.log(`Player BIOS: ${biosNum}`);
+
+			this.updateConsole("Game Started!");
+			this.updateConsole("Player put their bet down!");
 		}
 	}
 
@@ -46,20 +60,28 @@ class BlackJack {
 
 		console.log(`Enemy bet BIOS: ${betBios}`);
 		console.log(`Enemy BIOS: ${biosNum}`);
+
+		this.updateConsole("The dealer put their bet down!");
+	}
+
+	//DEALING CARDS
+	createCard() {
+
 	}
 }
 
 //GLOBAL VARIABLES
 main = new BlackJack("blackjack");
-
 let playerBios = 15;
 let enemyBios = 15;
 let playerBetBios = 0;
 let enemyBetBios = 0;
 let playerCardsCounter = 0; //PLAYER CARDS COUNTER
 let dealerCardsCounter = 0; //DEALER CARDS COUNTER
+let cardsType = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", 10, "A"]; //CARDS TYPES
 
-const dealerCont = document.getElementById("dealerCont");
+const consoleContainer = document.getElementById("consoleContainer"); //CONSOLE CONTAINER
+const dealerCont = document.getElementById("dealerCont"); //DEALER CONTAINER
 
 //SHOW BET MENU
 const betBtn = document.getElementById("betBtn");
@@ -70,6 +92,7 @@ const confirmBetBtn = document.getElementById("confirmBetBtn");
 const playerBetBiosLbl = document.getElementById("playerBetBios");
 const playerBiosCounterLbl = document.getElementById("playerBiosCounter");
 
+//PLAYER BETTING AND GAME START
 betBtn.addEventListener("click", () => {main.showBetMenu(betMenu)}); //SHOW BET WINDOW
 confirmBetBtn.addEventListener("click", () => {
 	main.bettingBios(playerBios, playerBetBios, playerBetBiosLbl, playerBiosCounterLbl, betInput, biosErrorLbl, betMenu);
@@ -80,4 +103,6 @@ confirmBetBtn.addEventListener("click", () => {
 const dealerBiosBetLbl = document.getElementById("dealerBiosBetLbl");
 const dealerBiosCounterLbl = document.getElementById("dealerBiosCounter");
 
-//DEALING CARDS LOOP
+//DRAWING THE CARDS
+const playerCardHolder = document.getElementById("playerCardHolder");
+const enemyCardHolder = document.getElementById("enemyCardHolder");
