@@ -151,6 +151,8 @@ class BlackJack {
 
 						if (this.sumOfArray(playerCardValues) > 15) {
 							clearInterval(minInterval);
+							playerCardSumLbl.innerText = `Card Sum \n ${this.sumOfArray(playerCardValues)}`;
+							dealerCardSumLbl.innerText = "Card Sum \n ?";
 							console.log("cleared minInterval");
 						}
 					}, 1500);
@@ -170,8 +172,7 @@ let playerBios = 15;
 let enemyBios = 15;
 let playerBetBios = 0;
 let enemyBetBios = 0;
-let cardsType = [2, 3, 4, 5, 2, 2, 2, 2, "J", "Q", "K", 10, "A"]; //DEBUG LIST
-//let cardsType = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", 10, "A"]; //CARDS TYPES
+let cardsType = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", 10, "A"]; //CARDS TYPES
 let playerCardsCounter = 0; //PLAYER CARDS COUNTER
 let dealerCardsCounter = 0; //DEALER CARDS COUNTER
 let playerCardValues = []; //PLAYER CARD ARRAY
