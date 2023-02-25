@@ -110,8 +110,10 @@ class BlackJack {
 	checkLoss(name, argCardValues) {
 		if (this.sumOfArray(argCardValues) > 21) {
 			console.log(`${name} went over 21`);
+			return true
 		} else {
-			console.log("No one wen over 21");
+			console.log(`${name} didn't go over 21`);
+			return false
 		}
 	}
 
@@ -141,24 +143,21 @@ class BlackJack {
 			}
 
 			if (this.stopInterval) { //CLEARING BEGIN INTERVAL
-				console.log(`Player cards sum: ${this.sumOfArray(playerCardValues)}`);
 
-				if (this.sumOfArray(playerCardValues) <= 15) { //THIS IS FOR THE SOFT CAP //MAYBE MAKE IT A FUNCTION LATER
-					setTimeout(() => {
-						while (this.sumOfArray(playerCardValues) <= 15) {
-							this.updateConsole("Player bonus cards are being dealt!");
-							this.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
-							console.log("Created card by loop because cardSum was <= 15");
-							console.log(`Player cards: ${playerCardValues}`);
-							this.checkLoss(this.player, playerCardValues);
+				if (this.sumOfArray(playerCardValues) < 16) {
+					let minInterval = setInterval(() => {
+						this.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
+						console.log(`Player cards: ${playerCardValues}`);
+
+						if (this.sumOfArray(playerCardValues) > 15) {
+							clearInterval(minInterval);
+							console.log("cleared minInterval");
 						}
 					}, 1500);
-				} else {
-					console.log("Interval stopped");
-					playerCardSumLbl.innerText = `Card Sum \n ${this.sumOfArray(playerCardValues)}`;
-					dealerCardSumLbl.innerText = `Card Sum \n ?`;
-					clearInterval(this.beginInterval);
-				}
+				} 
+
+				console.log("Interval stopped");
+				clearInterval(this.beginInterval);
 			}
 
 		}, 1500);
@@ -171,7 +170,8 @@ let playerBios = 15;
 let enemyBios = 15;
 let playerBetBios = 0;
 let enemyBetBios = 0;
-let cardsType = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", 10, "A"]; //CARDS TYPES
+let cardsType = [2, 3, 4, 5, 2, 2, 2, 2, "J", "Q", "K", 10, "A"]; //DEBUG LIST
+//let cardsType = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", 10, "A"]; //CARDS TYPES
 let playerCardsCounter = 0; //PLAYER CARDS COUNTER
 let dealerCardsCounter = 0; //DEALER CARDS COUNTER
 let playerCardValues = []; //PLAYER CARD ARRAY
