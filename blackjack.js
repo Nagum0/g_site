@@ -1,6 +1,10 @@
 class BlackJack {
-	constructor (title) {
-		this.title = title;
+	constructor () {
+		this.dealer = "The dealer";
+		this.player = "The player";
+		this.beginInterval;
+		this.timeCounter = 0;
+		this.stopInterval = false;
 	}
 
 	//UPDATE CONSOLE
@@ -101,10 +105,68 @@ class BlackJack {
 		card.appendChild(cardValue);
 		cardHolder.appendChild(card);
 	}
+
+	//CHECK LOSS
+	checkLoss(name, argCardValues) {
+		if (this.sumOfArray(argCardValues) > 21) {
+			console.log(`${name} went over 21`);
+		} else {
+			console.log("No one wen over 21");
+		}
+	}
+
+	//BEGIN CARD DEALING FUNCTION //ONLY CALL THIS ONCE FOR EACH GAME
+	beginDealing(enemyCardHolder, dealerCardValues, dealerCardsCounter, playerCardHolder, playerCardValues, playerCardsCounter) {
+		this.beginInterval = setInterval(() => {
+			this.timeCounter++;
+
+			switch (this.timeCounter) {
+				case 1:
+					this.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
+					console.log(`Dealer cards: ${dealerCardValues}`);
+					break;
+				case 2:
+					this.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
+					console.log(`Player cards: ${playerCardValues}`);
+					break;
+				case 3:
+					this.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
+					console.log(`Dealer cards: ${dealerCardValues}`);
+					break;
+				case 4:
+					this.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
+					console.log(`Player cards: ${playerCardValues}`);
+					this.stopInterval = true;
+					break;
+			}
+
+			if (this.stopInterval) { //CLEARING BEGIN INTERVAL
+				console.log(`Player cards sum: ${this.sumOfArray(playerCardValues)}`);
+
+				if (this.sumOfArray(playerCardValues) <= 15) { //THIS IS FOR THE SOFT CAP //MAYBE MAKE IT A FUNCTION LATER
+					setTimeout(() => {
+						while (this.sumOfArray(playerCardValues) <= 15) {
+							this.updateConsole("Player bonus cards are being dealt!");
+							this.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
+							console.log("Created card by loop because cardSum was <= 15");
+							console.log(`Player cards: ${playerCardValues}`);
+							this.checkLoss(this.player, playerCardValues);
+						}
+					}, 1500);
+				} else {
+					console.log("Interval stopped");
+					playerCardSumLbl.innerText = `Card Sum \n ${this.sumOfArray(playerCardValues)}`;
+					dealerCardSumLbl.innerText = `Card Sum \n ?`;
+					clearInterval(this.beginInterval);
+				}
+			}
+
+		}, 1500);
+	}
 }
 
 //GLOBAL VARIABLES
-main = new BlackJack("blackjack");
+main = new BlackJack();
 let playerBios = 15;
 let enemyBios = 15;
 let playerBetBios = 0;
@@ -134,35 +196,11 @@ confirmBetBtn.addEventListener("click", () => {
 	main.bettingBios(playerBios, playerBetBios, playerBetBiosLbl, playerBiosCounterLbl, betInput, biosErrorLbl, betMenu);
 	main.dealerBet(enemyBios, enemyBetBios, dealerBiosBetLbl, dealerBiosCounterLbl);
 
+	setTimeout(main.updateConsole("The dealing will now begin!"), 1500);
+
 	//START DEALING THE CARDS
-	setTimeout(() => {
-		main.updateConsole("The dealing of the cards will now begin!");
-		//FIRST DEALER CARD
-		setTimeout(() => { 
-			main.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
-			console.log(`Dealer cards: ${dealerCardValues}`);
+	main.beginDealing(enemyCardHolder, dealerCardValues, dealerCardsCounter, playerCardHolder, playerCardValues, playerCardsCounter);
 
-			//FIRST PLAYER CARD
-			setTimeout(() => {
-				main.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
-				console.log(`Player cards: ${playerCardValues}`);
-
-				//SECOND DEALER CARD
-				setTimeout(() => {
-					main.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
-					console.log(`Dealer cards: ${dealerCardValues}`);
-
-					//SECOND PLAYER CARD
-					setTimeout(() => {
-						main.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
-						console.log(`Player cards: ${playerCardValues}`);
-
-						console.log(main.sumOfArray(playerCardValues));
-					}, 2000);
-				}, 2000);
-			}, 2000);
-		}, 2000);
-	}, 2000);
 }); //CONFIRM BET //START DEALING CARDS
 
 //DEALER BET
@@ -172,3 +210,5 @@ const dealerBiosCounterLbl = document.getElementById("dealerBiosCounter");
 //DRAWING THE CARDS
 const playerCardHolder = document.getElementById("playerCardHolder");
 const enemyCardHolder = document.getElementById("enemyCardHolder");
+const playerCardSumLbl = document.getElementById("playerCardSumLbl");
+const dealerCardSumLbl = document.getElementById("dealerCardSumLbl");
