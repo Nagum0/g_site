@@ -145,6 +145,8 @@ class BlackJack {
 			if (this.stopInterval) { //CLEARING BEGIN INTERVAL
 
 				if (this.sumOfArray(playerCardValues) < 16) {
+					this.updateConsole("Player gets bonus cards!");
+
 					let minInterval = setInterval(() => {
 						this.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
 						console.log(`Player cards: ${playerCardValues}`);
@@ -158,6 +160,8 @@ class BlackJack {
 					}, 1500);
 				} 
 
+				playerCardSumLbl.innerText = `Card Sum \n ${this.sumOfArray(playerCardValues)}`;
+				dealerCardSumLbl.innerText = "Card Sum \n ?";
 				console.log("Interval stopped");
 				clearInterval(this.beginInterval);
 			}
