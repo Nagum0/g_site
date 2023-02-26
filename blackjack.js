@@ -57,6 +57,8 @@ class BlackJack {
 
 			this.updateConsole("Game Started!");
 			this.updateConsole("Player put their bet down!");
+
+			gameStart = true;
 		}
 	}
 
@@ -200,6 +202,7 @@ class BlackJack {
 
 //GLOBAL VARIABLES
 main = new BlackJack();
+let gameStart = false;
 let playerBios = 15;
 let enemyBios = 15;
 let playerBetBios = 0;
@@ -230,12 +233,15 @@ const playerBiosCounterLbl = document.getElementById("playerBiosCounter");
 betBtn.addEventListener("click", () => {main.showBetMenu(betMenu)}); //SHOW BET WINDOW
 confirmBetBtn.addEventListener("click", () => {
 	main.bettingBios(playerBios, playerBetBios, playerBetBiosLbl, playerBiosCounterLbl, betInput, biosErrorLbl, betMenu);
-	main.dealerBet(enemyBios, enemyBetBios, dealerBiosBetLbl, dealerBiosCounterLbl);
 
-	setTimeout(main.updateConsole("The dealing will now begin!"), 1500);
-
-	//START DEALING THE CARDS
-	main.beginDealing(enemyCardHolder, dealerCardValues, dealerCardsCounter, playerCardHolder, playerCardValues, playerCardsCounter);
+	if (gameStart) {
+		main.dealerBet(enemyBios, enemyBetBios, dealerBiosBetLbl, dealerBiosCounterLbl);
+		setTimeout(main.updateConsole("The dealing will now begin!"), 1500);
+		//START DEALING THE CARDS
+		main.beginDealing(enemyCardHolder, dealerCardValues, dealerCardsCounter, playerCardHolder, playerCardValues, playerCardsCounter);
+	} else {
+		main.updateConsole("Now enought BIOS!");
+	}
 
 }); //CONFIRM BET //START DEALING CARDS
 
