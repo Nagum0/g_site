@@ -31,6 +31,12 @@ class BlackJack {
 		betMenu.classList.add("bet_menu");
 	}
 
+	//LOST MENU
+	showLostMenu(lostMenu) {
+		lostMenu.classList.remove("hidden");
+		lostMenu.classList.add("bet_menu");
+	}
+
 	//BET FUNCTION
 	bettingBios(biosNum, betBios, betBiosLbl, playerBiosLbl, biosInput, errMsg, betMenu) {
 		if (biosInput.value > biosNum) {
@@ -91,6 +97,7 @@ class BlackJack {
 
 		const cardValue = document.createElement("label");
 		cardValue.classList.add("card_value");
+
 		if (dealerCardsCounter == 0) {
 			dealerHiddenCard = cardsType[randCardValue];
 			cardValue.innerText = "?";
@@ -110,10 +117,15 @@ class BlackJack {
 	checkLoss(name, argCardValues) {
 		if (this.sumOfArray(argCardValues) > 21) {
 			console.log(`${name} went over 21`);
-			return true
+
+			setTimeout(() => {
+				this.showLostMenu(lostWindow);
+			}, 1500);
+
+			return true;
 		} else {
 			console.log(`${name} didn't go over 21`);
-			return false
+			return false;
 		}
 	}
 
@@ -156,17 +168,33 @@ class BlackJack {
 							playerCardSumLbl.innerText = `Card Sum \n ${this.sumOfArray(playerCardValues)}`;
 							dealerCardSumLbl.innerText = "Card Sum \n ?";
 							console.log("cleared minInterval");
+
+							if (this.checkLoss(this.player, playerCardValues)) {
+								this.updateConsole("The player went over 21!");
+								this.updateConsole("The player LOST!");
+							}
 						}
 					}, 1500);
 				} 
-
 				playerCardSumLbl.innerText = `Card Sum \n ${this.sumOfArray(playerCardValues)}`;
 				dealerCardSumLbl.innerText = "Card Sum \n ?";
 				console.log("Interval stopped");
 				clearInterval(this.beginInterval);
+				hitEnabled = true; //PLAYER'S ABILTY TO ASK FOR A HIT ENABLED
 			}
 
 		}, 1500);
+	}
+
+	playerHit() {
+		this.updateConsole("Player hit!");
+		this.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
+		playerCardSumLbl.innerText = `Card Sum \n ${this.sumOfArray(playerCardValues)}`;
+
+		if (this.checkLoss(this.player, playerCardValues)) {
+			this.showLostMenu(lostWindow);
+			playerStatus = "lost";
+		}
 	}
 }
 
@@ -182,6 +210,9 @@ let dealerCardsCounter = 0; //DEALER CARDS COUNTER
 let playerCardValues = []; //PLAYER CARD ARRAY
 let dealerCardValues = []; //DEALER CARD ARRAY
 let dealerHiddenCard; //DEALER HIDDEN CARD
+let hitEnabled = false; //PLAYER ABILITY TO ASK FOR A HIT
+let standEnabled = false; //PLAYER ABILITY TO ASK FOR A STAND
+let playerStatus = "neutral"; //"lost" or "won"
 
 const consoleContainer = document.getElementById("consoleContainer"); //CONSOLE CONTAINER
 const dealerCont = document.getElementById("dealerCont"); //DEALER CONTAINER
@@ -217,3 +248,21 @@ const playerCardHolder = document.getElementById("playerCardHolder");
 const enemyCardHolder = document.getElementById("enemyCardHolder");
 const playerCardSumLbl = document.getElementById("playerCardSumLbl");
 const dealerCardSumLbl = document.getElementById("dealerCardSumLbl");
+
+//HIT FUNCTION
+const hitBtn = document.getElementById("hitBtn");
+
+hitBtn.addEventListener("click", () => {
+	if (hitEnabled == true && playerStatus == "neutral") {
+		console.log("hit");
+		main.playerHit();
+	}
+});
+
+//LOST FUNCTION
+const lostWindow = document.getElementById("lostWindow");
+const retryBtn = document.getElementById("retryBtn");
+
+retryBtn.addEventListener("click", () => {
+	console.log("RETRY");
+});

@@ -12,6 +12,7 @@
 <body>
 	
 	<div class="blackjack_cont">
+		<!--DEALER CONTAINER-->
 		<div class="dealer_cont">
 			<span class="info_span">
 				<label class="name_lbl">
@@ -32,14 +33,10 @@
 			</span>	
 
 			<span class="card_holder dealer_card_holder" id="enemyCardHolder">
-				<!--<div class="blackjack_card">
-					<label class="card_value">
-						10
-					</label>
-				</div>-->	
 			</span>
 
 		</div>
+		<!--PLAYER CONTAINER-->
 		<div class="player_cont">
 			<span class="info_span">
 				<label class="name_lbl">
@@ -69,15 +66,11 @@
 			</span>
 
 			<span class="card_holder player_card_holder" id="playerCardHolder">
-				<!--<div class="blackjack_card">
-					<label class="card_value">
-						10
-					</label>
-				</div>-->
 			</span>
 
 		</div>
 
+		<!--BETTING WINDOW-->
 		<div class="hidden" id="betMenu">
 			<label class="bet_lbl">
 				<b><i>Bet</i></b> <br>
@@ -92,8 +85,18 @@
 		</div>
 	</div>
 
+	<!--CONSOLE-->
 	<div class="console_cont" id="consoleContainer">
 		<!--console_log class for text-->
+	</div>
+
+	<div class="hidden" id="lostWindow">
+		<label class="bet_lbl">
+			YOU LOST!
+		</label>
+		<a href="#" class="command_btn retry_btn" id="retryBtn">
+			RETRY
+		</a>
 	</div>
 
     <script src="blackjack.js" defer></script>
