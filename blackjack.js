@@ -215,28 +215,32 @@ class BlackJack {
 		this.clearConsole();
 		this.updateConsole("New round started! Place your bets!");
 
-		lostWindow.classList.remove("bet_menu");
-		lostWindow.classList.add("hidden");
+		playerBetBios = 0;
+		enemyBetBios = 0;
 
-		/*playerBetBios = 0;
-		enemyBetBios = 0;*/
-
-		playerCardValues.splice();
-		dealerCardValues.splice();
+		playerCardValues.length = 0;
+		dealerCardValues.length = 0;
 
 		playerBetBiosLbl.innerText = "Bios bet \n 0";
 		dealerBiosBetLbl.innerText = "Bios bet \n 0";
 		playerCardSumLbl.innerText = "Card Sum \n 0";
 		dealerCardSumLbl.innerText = "Card Sum \n 0";
 
-		console.log(`Player BIOS: ${this.playerBios}, dealer BIOS: ${this.dealerBios}`);
+		playerCardHolder.innerHTML = "";
+		enemyCardHolder.innerHTML = "";
+
+		lostWindow.classList.remove("bet_menu");
+		lostWindow.classList.add("hidden");
+
+		console.log(`Player BIOS: ${this.playerBios}, Dealer BIOS: ${this.dealerBios}`);
+		console.log(`Player bet BIOS: ${playerBetBios}, Dealer bet BIOS: ${enemyBetBios}`);
+		console.log(`Player cards: ${playerCardValues}, Dealer cards: ${dealerCardValues}`);
 	}
 }
 
 //GLOBAL VARIABLES
 main = new BlackJack();
 let gameStart = false;
-//let enemyBios = 15;
 let playerBetBios = 0;
 let enemyBetBios = 0;
 let cardsType = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", 10, "A"]; //CARDS TYPES
