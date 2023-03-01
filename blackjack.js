@@ -35,12 +35,14 @@ class BlackJack {
 
 	//BET MENU METHODS
 	showBetMenu(betMenu) {
+		console.log("Betting started!");
 		betMenu.classList.remove("hidden");
 		betMenu.classList.add("bet_menu");
 	}
 
 	//LOST MENU
 	showLostMenu(lostMenu) {
+		console.log("Lost menu opened");
 		lostMenu.classList.remove("hidden");
 		lostMenu.classList.add("bet_menu");
 	}
@@ -56,7 +58,6 @@ class BlackJack {
 		} else {
 			betBios = biosInput.value;
 			this.playerBios -= betBios;
-			betMenu.style.display = "none";
 			playerBiosLbl.innerText = `Bios \n ${this.playerBios}`;
 			betBiosLbl.innerText = `Bios bet \n ${betBios}`;
 
@@ -65,6 +66,9 @@ class BlackJack {
 
 			this.updateConsole("Game Started!");
 			this.updateConsole("Player put their bet down!");
+
+			betMenu.classList.remove("bet_menu");
+			betMenu.classList.add("hidden");
 
 			gameStart = true;
 		}
@@ -208,7 +212,7 @@ class BlackJack {
 	}
 
 	//RETRY
-	retryRound(dealerBios) {
+	retryRound() {
 		console.log("RETRY");
 		gameStart = false;
 
@@ -218,8 +222,8 @@ class BlackJack {
 		playerBetBios = 0;
 		enemyBetBios = 0;
 
-		playerCardValues.length = 0;
-		dealerCardValues.length = 0;
+		playerCardValues = [0];
+		dealerCardValues = [0];
 
 		playerBetBiosLbl.innerText = "Bios bet \n 0";
 		dealerBiosBetLbl.innerText = "Bios bet \n 0";
@@ -229,12 +233,14 @@ class BlackJack {
 		playerCardHolder.innerHTML = "";
 		enemyCardHolder.innerHTML = "";
 
+		this.showBetMenu(betMenu);
+
 		lostWindow.classList.remove("bet_menu");
 		lostWindow.classList.add("hidden");
 
 		console.log(`Player BIOS: ${this.playerBios}, Dealer BIOS: ${this.dealerBios}`);
 		console.log(`Player bet BIOS: ${playerBetBios}, Dealer bet BIOS: ${enemyBetBios}`);
-		console.log(`Player cards: ${playerCardValues}, Dealer cards: ${dealerCardValues}`);
+		console.log(playerCardValues, dealerCardValues);
 	}
 }
 
@@ -266,8 +272,11 @@ const playerBetBiosLbl = document.getElementById("playerBetBios");
 const playerBiosCounterLbl = document.getElementById("playerBiosCounter");
 
 //PLAYER BETTING AND GAME START
-betBtn.addEventListener("click", () => {main.showBetMenu(betMenu)}); //SHOW BET WINDOW
-confirmBetBtn.addEventListener("click", () => {
+betBtn.addEventListener("click", () => { //SHOW BET WINDOW
+	main.showBetMenu(betMenu)
+});
+
+confirmBetBtn.addEventListener("click", () => { //CONFIRM BET //START DEALING CARDS
 	main.bettingBios(playerBetBios, playerBetBiosLbl, playerBiosCounterLbl, betInput, biosErrorLbl, betMenu);
 
 	if (gameStart) {
@@ -279,7 +288,7 @@ confirmBetBtn.addEventListener("click", () => {
 		main.updateConsole("Now enought BIOS!");
 	}
 
-}); //CONFIRM BET //START DEALING CARDS
+});
 
 //DEALER BET
 const dealerBiosBetLbl = document.getElementById("dealerBiosBetLbl");
