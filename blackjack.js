@@ -5,6 +5,9 @@ class BlackJack {
 		this.beginInterval;
 		this.timeCounter = 0;
 		this.stopInterval = false;
+
+		this.playerBios = 15;
+		this.dealerBios = 15;
 	}
 
 	//UPDATE CONSOLE
@@ -13,6 +16,11 @@ class BlackJack {
 		consoleLog.innerText = text;
 		consoleLog.classList.add("console_log");
 		consoleContainer.appendChild(consoleLog);
+	}
+
+	//CLEAR CONSOLE
+	clearConsole() {
+		consoleContainer.innerHTML = ""; //CLEARS GAME CONSOLE
 	}
 
 	//SUM OF CARD ARRAY
@@ -38,8 +46,8 @@ class BlackJack {
 	}
 
 	//BET FUNCTION
-	bettingBios(biosNum, betBios, betBiosLbl, playerBiosLbl, biosInput, errMsg, betMenu) {
-		if (biosInput.value > biosNum) {
+	bettingBios(betBios, betBiosLbl, playerBiosLbl, biosInput, errMsg, betMenu) {
+		if (biosInput.value > this.playerBios) {
 			console.log("You don't have enought BIOS");
 			errMsg.classList.remove("hidden");
 		} else if (biosInput.value == 0) {
@@ -47,13 +55,13 @@ class BlackJack {
 			errMsg.innerText = "Bet entry cannot be 0!";
 		} else {
 			betBios = biosInput.value;
-			biosNum -= betBios;
+			this.playerBios -= betBios;
 			betMenu.style.display = "none";
-			playerBiosLbl.innerText = `Bios \n ${biosNum}`;
+			playerBiosLbl.innerText = `Bios \n ${this.playerBios}`;
 			betBiosLbl.innerText = `Bios bet \n ${betBios}`;
 
 			console.log(`PLayer bet BIOS: ${betBios}`);
-			console.log(`Player BIOS: ${biosNum}`);
+			console.log(`Player BIOS: ${this.playerBios}`);
 
 			this.updateConsole("Game Started!");
 			this.updateConsole("Player put their bet down!");
@@ -63,7 +71,7 @@ class BlackJack {
 	}
 
 	//DEALER BET
-	dealerBet(biosNum, betBios, betBiosLbl, dealerBiosLbl) {
+	dealerBet(betBios, betBiosLbl, dealerBiosLbl) {
 		betBios = Math.floor(Math.random() * 5);
 
 		while (betBios < 3) {
@@ -75,12 +83,12 @@ class BlackJack {
 			}
 		}
 
-		biosNum -= betBios;
-		dealerBiosLbl.innerText = `Bios \n ${biosNum}`;
+		this.dealerBios -= betBios;
+		dealerBiosLbl.innerText = `Bios \n ${this.dealerBios}`;
 		betBiosLbl.innerText = `Bios bet \n ${betBios}`;
 
 		console.log(`Enemy bet BIOS: ${betBios}`);
-		console.log(`Enemy BIOS: ${biosNum}`);
+		console.log(`Enemy BIOS: ${this.dealerBios}`);
 
 		this.updateConsole("The dealer put their bet down!");
 	}
@@ -198,13 +206,37 @@ class BlackJack {
 			playerStatus = "lost";
 		}
 	}
+
+	//RETRY
+	retryRound(dealerBios) {
+		console.log("RETRY");
+		gameStart = false;
+
+		this.clearConsole();
+		this.updateConsole("New round started! Place your bets!");
+
+		lostWindow.classList.remove("bet_menu");
+		lostWindow.classList.add("hidden");
+
+		/*playerBetBios = 0;
+		enemyBetBios = 0;*/
+
+		playerCardValues.splice();
+		dealerCardValues.splice();
+
+		playerBetBiosLbl.innerText = "Bios bet \n 0";
+		dealerBiosBetLbl.innerText = "Bios bet \n 0";
+		playerCardSumLbl.innerText = "Card Sum \n 0";
+		dealerCardSumLbl.innerText = "Card Sum \n 0";
+
+		console.log(`Player BIOS: ${this.playerBios}, dealer BIOS: ${this.dealerBios}`);
+	}
 }
 
 //GLOBAL VARIABLES
 main = new BlackJack();
 let gameStart = false;
-let playerBios = 15;
-let enemyBios = 15;
+//let enemyBios = 15;
 let playerBetBios = 0;
 let enemyBetBios = 0;
 let cardsType = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", 10, "A"]; //CARDS TYPES
@@ -232,10 +264,10 @@ const playerBiosCounterLbl = document.getElementById("playerBiosCounter");
 //PLAYER BETTING AND GAME START
 betBtn.addEventListener("click", () => {main.showBetMenu(betMenu)}); //SHOW BET WINDOW
 confirmBetBtn.addEventListener("click", () => {
-	main.bettingBios(playerBios, playerBetBios, playerBetBiosLbl, playerBiosCounterLbl, betInput, biosErrorLbl, betMenu);
+	main.bettingBios(playerBetBios, playerBetBiosLbl, playerBiosCounterLbl, betInput, biosErrorLbl, betMenu);
 
 	if (gameStart) {
-		main.dealerBet(enemyBios, enemyBetBios, dealerBiosBetLbl, dealerBiosCounterLbl);
+		main.dealerBet(enemyBetBios, dealerBiosBetLbl, dealerBiosCounterLbl);
 		setTimeout(main.updateConsole("The dealing will now begin!"), 1500);
 		//START DEALING THE CARDS
 		main.beginDealing(enemyCardHolder, dealerCardValues, dealerCardsCounter, playerCardHolder, playerCardValues, playerCardsCounter);
@@ -266,9 +298,9 @@ hitBtn.addEventListener("click", () => {
 });
 
 //LOST FUNCTION
-const lostWindow = document.getElementById("lostWindow");
+const lostWindow = document.getElementById("lostWindow"); //LOST WINDOW POPUP
 const retryBtn = document.getElementById("retryBtn");
 
 retryBtn.addEventListener("click", () => {
-	console.log("RETRY");
+	main.retryRound();
 });
