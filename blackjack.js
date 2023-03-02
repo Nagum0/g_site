@@ -51,6 +51,12 @@ class BlackJack {
 		}
 	}
 
+	//WIN MENU
+	showWinMenu() {
+		winMenu.classList.remove("hidden");
+		winMenu.classList.add("bet_menu");
+	}
+
 	//BET FUNCTION
 	bettingBios(betBios, betBiosLbl, playerBiosLbl, biosInput, errMsg, betMenu) {
 		if (biosInput.value > this.playerBios) {
@@ -239,21 +245,23 @@ class BlackJack {
 
 	//CHECK WIN
 	checkWin() {
-		if (this.sumOfArray(dealerCardValues) > this.sumOfArray(playerCardValues)) {
+		if (this.sumOfArray(dealerCardValues) > this.sumOfArray(playerCardValues)) { //DEALER WIN
 			console.log("Dealer Wins");
 
 			setTimeout(() => {
 				this.updateConsole("The dealer is closer to 21! \n The dealer wins!");
+				this.showLostMenu(lostWindow); //SHOW LOST MENU
 			}, 1000);
 
-		} else if (this.sumOfArray(dealerCardValues) < this.sumOfArray(playerCardValues)) {
+		} else if (this.sumOfArray(dealerCardValues) < this.sumOfArray(playerCardValues)) { //PLAYER WIN
 			console.log("Player wins");
 
 			setTimeout(() => {
 				this.updateConsole("The player is closer to 21! \n The player wins!");
+				this.showWinMenu(); //SHOW WIN MENU
 			}, 1000);
 
-		} else {
+		} else { //DRAW
 			console.log("Draw");
 
 			setTimeout(() => {
@@ -313,6 +321,9 @@ class BlackJack {
 
 		lostWindow.classList.remove("bet_menu");
 		lostWindow.classList.add("hidden");
+
+		winMenu.classList.remove("bet_menu");
+		winMenu.classList.add("hidden");
 
 		console.log(`Player BIOS: ${this.playerBios}, Dealer BIOS: ${this.dealerBios}`);
 		console.log(`Player bet BIOS: ${playerBetBios}, Dealer bet BIOS: ${enemyBetBios}`);
@@ -408,3 +419,7 @@ standBtn.addEventListener("click", () => {
 //WIN MENU
 const winMenu = document.getElementById("winMenu");
 const playAgainBtn = document.getElementById("playAgainBtn");
+
+playAgainBtn.addEventListener("click", () => {
+	main.retryRound();
+});
