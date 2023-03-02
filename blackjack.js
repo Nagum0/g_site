@@ -281,7 +281,24 @@ class BlackJack {
 			firstDealerCardValue.innerText = dealerCardValues[1];
 		}, 1000);
 
-		this.checkWin();
+		if (this.sumOfArray(dealerCardValues) < 16) {
+			let dealerMinInterval = setInterval(() => {
+				this.updateConsole("Dealer gets bonus card!");
+				this.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
+
+				if (this.sumOfArray(dealerCardValues) > 15) {
+					clearInterval(dealerMinInterval);
+					dealerCardSumLbl.innerText = `Card Sum \n ${this.sumOfArray(dealerCardValues)}`
+					console.log("cleared delearMinInterval");
+
+					if (this.checkLoss(this.dealer, dealerCardValues)) {
+						this.updateConsole("The dealer went over 21! \n The dealer lost!");
+					}
+				}
+			}, 1000);
+		}
+
+		//this.checkWin();
 	}
 
 	//RETRY
