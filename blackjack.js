@@ -65,8 +65,8 @@ class BlackJack {
 			playerBiosLbl.innerText = `Bios \n ${this.playerBios}`;
 			betBiosLbl.innerText = `Bios bet \n ${betBios}`;
 
-			console.log(`PLayer bet BIOS: ${betBios}`);
-			console.log(`Player BIOS: ${this.playerBios}`);
+			//console.log(`PLayer bet BIOS: ${betBios}`);
+			//console.log(`Player BIOS: ${this.playerBios}`);
 
 			this.updateConsole("Game Started!");
 			this.updateConsole("Player put their bet down!");
@@ -95,8 +95,8 @@ class BlackJack {
 		dealerBiosLbl.innerText = `Bios \n ${this.dealerBios}`;
 		betBiosLbl.innerText = `Bios bet \n ${betBios}`;
 
-		console.log(`Enemy bet BIOS: ${betBios}`);
-		console.log(`Enemy BIOS: ${this.dealerBios}`);
+		//console.log(`Enemy bet BIOS: ${betBios}`);
+		//console.log(`Enemy BIOS: ${this.dealerBios}`);
 
 		this.updateConsole("The dealer put their bet down!");
 	}
@@ -118,6 +118,8 @@ class BlackJack {
 
 		if (dealerCardsCounter == 0) {
 			dealerHiddenCard = cardsType[randCardValue];
+			card.id = "firstChild"; //FIRST CHILD OF DEALER CARD CONTAINER
+			cardValue.id = "firstValueChild";
 			cardValue.innerText = "?";
 			cardArray.push(chosenCardValue);
 			dealerCardsCounter++;
@@ -127,6 +129,11 @@ class BlackJack {
 			cardCounter++;
 		}
 
+		/*cardValue.innerText = cardsType[randCardValue];
+			cardArray.push(chosenCardValue);
+			cardCounter++;*/
+
+		console.log(card);
 		card.appendChild(cardValue);
 		cardHolder.appendChild(card);
 	}
@@ -200,11 +207,13 @@ class BlackJack {
 				playerCardSumLbl.innerText = `Card Sum \n ${this.sumOfArray(playerCardValues)}`;
 				dealerCardSumLbl.innerText = "Card Sum \n ?";
 				hitEnabled = true; //PLAYER'S ABILITY TO ASK FOR A HIT ENABLED
+				standEnabled = true; //PLAYER'S ABILITY TO STAND ENABLED
 			}
 
 		}, 1500);
 	}
 
+	//PLAYER HIT
 	playerHit() {
 		this.updateConsole("Player hit!");
 		this.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
@@ -214,6 +223,57 @@ class BlackJack {
 			this.showLostMenu(lostWindow);
 			playerStatus = "lost";
 		}
+	}
+
+	//PLAYER STAND
+	playerStand() {
+		if (standEnabled) {
+			console.log("stand");
+			hitEnabled = false; //DISABLING HIT ABILITY
+			this.updateConsole("Player stands! \n The endgame will begin!");
+			this.endGame(); //ENDGAME METHOD STARTED
+		} else {
+			console.log("stand not enabled");
+		}
+	}
+
+	//CHECK WIN
+	checkWin() {
+		if (this.sumOfArray(dealerCardValues) > this.sumOfArray(playerCardValues)) {
+			console.log("Dealer Wins");
+
+			setTimeout(() => {
+				this.updateConsole("The dealer is closer to 21! \n The dealer wins!");
+			}, 1000);
+
+		} else if (this.sumOfArray(dealerCardValues) < this.sumOfArray(playerCardValues)) {
+			console.log("Player wins");
+
+			setTimeout(() => {
+				this.updateConsole("The player is closer to 21! \n The player wins!");
+			}, 1000);
+
+		} else {
+			console.log("Draw");
+
+			setTimeout(() => {
+				this.updateConsole("Same score! \n DRAW!");
+			}, 1000);
+		}
+	}
+
+	//ENDGAME
+	endGame() {
+		console.log("Endgame started");
+		console.log(dealerCardValues);
+
+		setTimeout(() => {
+			this.updateConsole("First dealer card is being shown!");
+			const firstDealerCardValue = document.getElementById("firstValueChild");
+			firstDealerCardValue.innerText = dealerCardValues[1];
+		}, 1000);
+
+		this.checkWin();
 	}
 
 	//RETRY
@@ -248,6 +308,9 @@ class BlackJack {
 
 		lostMenuEnabled = false;
 
+		hitEnabled = false;
+		standEnabled = false;
+
 		lostWindow.classList.remove("bet_menu");
 		lostWindow.classList.add("hidden");
 
@@ -257,6 +320,7 @@ class BlackJack {
 	}
 }
 
+//MAIN-----------------------------------------------------------------------------------------------------------------------------------------------
 //GLOBAL VARIABLES
 main = new BlackJack();
 let gameStart = false;
@@ -287,7 +351,7 @@ const playerBiosCounterLbl = document.getElementById("playerBiosCounter");
 
 //PLAYER BETTING AND GAME START
 betBtn.addEventListener("click", () => { //SHOW BET WINDOW
-	main.showBetMenu(betMenu)
+	main.showBetMenu(betMenu);
 });
 
 confirmBetBtn.addEventListener("click", () => { //CONFIRM BET //START DEALING CARDS
@@ -333,3 +397,14 @@ const retryBtn = document.getElementById("retryBtn");
 retryBtn.addEventListener("click", () => {
 	main.retryRound();
 });
+
+//STAND BTN
+const standBtn = document.getElementById("standBtn");
+
+standBtn.addEventListener("click", () => {
+	main.playerStand();
+});
+
+//WIN MENU
+const winMenu = document.getElementById("winMenu");
+const playAgainBtn = document.getElementById("playAgainBtn");
