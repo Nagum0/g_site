@@ -2,7 +2,7 @@ class BlackJack {
 	constructor () {
 		this.dealer = "The dealer";
 		this.player = "The player";
-		this.beginInterval;
+		//this.beginInterval;
 		this.timeCounter = 0;
 		this.stopInterval = false;
 
@@ -42,9 +42,13 @@ class BlackJack {
 
 	//LOST MENU
 	showLostMenu(lostMenu) {
-		console.log("Lost menu opened");
-		lostMenu.classList.remove("hidden");
-		lostMenu.classList.add("bet_menu");
+		if (lostMenuEnabled) {
+			console.log("Lost menu opened");
+			lostMenu.classList.remove("hidden");
+			lostMenu.classList.add("bet_menu");
+		} else {
+			console.log("Lost menu already enabled");
+		}
 	}
 
 	//BET FUNCTION
@@ -132,6 +136,8 @@ class BlackJack {
 		if (this.sumOfArray(argCardValues) > 21) {
 			console.log(`${name} went over 21`);
 
+			lostMenuEnabled = true; //ENABLING LOST MENU
+			
 			setTimeout(() => {
 				this.showLostMenu(lostWindow);
 			}, 1500);
@@ -145,9 +151,9 @@ class BlackJack {
 
 	//BEGIN CARD DEALING FUNCTION //ONLY CALL THIS ONCE FOR EACH GAME
 	beginDealing(enemyCardHolder, dealerCardValues, dealerCardsCounter, playerCardHolder, playerCardValues, playerCardsCounter) {
-		this.beginInterval = setInterval(() => {
+		let beginInterval = setInterval(() => {
 			this.timeCounter++;
-
+			
 			switch (this.timeCounter) {
 				case 1:
 					this.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
@@ -155,7 +161,6 @@ class BlackJack {
 					break;
 				case 2:
 					this.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
-					console.log(`Player cards: ${playerCardValues}`);
 					break;
 				case 3:
 					this.createCard(enemyCardHolder, dealerCardValues, dealerCardsCounter);
@@ -163,12 +168,13 @@ class BlackJack {
 					break;
 				case 4:
 					this.createCard(playerCardHolder, playerCardValues, playerCardsCounter);
-					console.log(`Player cards: ${playerCardValues}`);
 					this.stopInterval = true;
 					break;
 			}
 
-			if (this.stopInterval) { //CLEARING BEGIN INTERVAL
+			if (this.stopInterval) {
+				clearInterval(beginInterval); //CLEARING BEGIN INTERVAL
+				console.log("Interval stopped");
 
 				if (this.sumOfArray(playerCardValues) < 16) {
 					this.updateConsole("Player gets bonus cards!");
@@ -186,15 +192,14 @@ class BlackJack {
 							if (this.checkLoss(this.player, playerCardValues)) {
 								this.updateConsole("The player went over 21!");
 								this.updateConsole("The player LOST!");
-							}
+							} 
 						}
 					}, 1500);
-				} 
+				}
+
 				playerCardSumLbl.innerText = `Card Sum \n ${this.sumOfArray(playerCardValues)}`;
 				dealerCardSumLbl.innerText = "Card Sum \n ?";
-				console.log("Interval stopped");
-				clearInterval(this.beginInterval);
-				hitEnabled = true; //PLAYER'S ABILTY TO ASK FOR A HIT ENABLED
+				hitEnabled = true; //PLAYER'S ABILITY TO ASK FOR A HIT ENABLED
 			}
 
 		}, 1500);
@@ -233,7 +238,15 @@ class BlackJack {
 		playerCardHolder.innerHTML = "";
 		enemyCardHolder.innerHTML = "";
 
-		this.showBetMenu(betMenu);
+		dealerCardsCounter = 0;
+		playerCardsCounter = 0;
+
+		this.stopInterval = false; //RESETTING INTERVAL
+		this.timeCounter = 0; //RESETTING TIME COUNTER
+
+		playerStatus = "neutral"; //REVERSING PLAYER STATUS FOR HIT FUNCTION
+
+		lostMenuEnabled = false;
 
 		lostWindow.classList.remove("bet_menu");
 		lostWindow.classList.add("hidden");
@@ -252,12 +265,13 @@ let enemyBetBios = 0;
 let cardsType = [2, 3, 4, 5, 6, 7, 8, 9, "J", "Q", "K", 10, "A"]; //CARDS TYPES
 let playerCardsCounter = 0; //PLAYER CARDS COUNTER
 let dealerCardsCounter = 0; //DEALER CARDS COUNTER
-let playerCardValues = []; //PLAYER CARD ARRAY
-let dealerCardValues = []; //DEALER CARD ARRAY
+let playerCardValues = [0]; //PLAYER CARD ARRAY
+let dealerCardValues = [0]; //DEALER CARD ARRAY
 let dealerHiddenCard; //DEALER HIDDEN CARD
 let hitEnabled = false; //PLAYER ABILITY TO ASK FOR A HIT
 let standEnabled = false; //PLAYER ABILITY TO ASK FOR A STAND
 let playerStatus = "neutral"; //"lost" or "won"
+let lostMenuEnabled = false; //LOST MENU ENABLED VARIABLE
 
 const consoleContainer = document.getElementById("consoleContainer"); //CONSOLE CONTAINER
 const dealerCont = document.getElementById("dealerCont"); //DEALER CONTAINER
@@ -281,7 +295,9 @@ confirmBetBtn.addEventListener("click", () => { //CONFIRM BET //START DEALING CA
 
 	if (gameStart) {
 		main.dealerBet(enemyBetBios, dealerBiosBetLbl, dealerBiosCounterLbl);
+
 		setTimeout(main.updateConsole("The dealing will now begin!"), 1500);
+
 		//START DEALING THE CARDS
 		main.beginDealing(enemyCardHolder, dealerCardValues, dealerCardsCounter, playerCardHolder, playerCardValues, playerCardsCounter);
 	} else {
